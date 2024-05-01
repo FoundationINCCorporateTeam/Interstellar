@@ -9,6 +9,11 @@
     <title id="tab-title">Home</title>
     <link rel="stylesheet" href="/assets/styles/main.css?v=8" />
     <link rel="stylesheet" href="/assets/styles/global.css?v=8" />
+    <style>
+      .error-message {
+        color: red;
+      }
+    </style>
   </head>
   <body class="center" onload="splashtext()">
     <div class="fixed-nav-bar"></div>
@@ -18,8 +23,9 @@
         <h1 class="title"><an>Inter</an>stellar</h1>
         <p id="splash">Unknown</p>
         <div class="search-container">
-          <form id="fs" method="POST">
+          <form id="fs" onsubmit="return validateForm()" method="POST">
             <input id="is" class="main-search" placeholder="Search with Google or enter address" type="text" />
+            <span id="error-message" class="error-message"></span>
           </form>
         </div>
       </div>
@@ -43,5 +49,23 @@
     </script>
     <!-- DO NOT REMOVE-->
     <div id="adv"></div>
+    <script>
+      function validateForm() {
+        var blockedUrls = ["porn", "testprompt"]; // List of blocked URLs
+        var inputUrl = document.getElementById("is").value.trim();
+        var errorMessageElement = document.getElementById("error-message");
+
+        for (var i = 0; i < blockedUrls.length; i++) {
+          if (inputUrl.includes(blockedUrls[i])) {
+            errorMessageElement.textContent = "The search query you have entered is blocked. Do not try to search inappropriate things. System Message: SEARCH_QUERY_BLOCKED";
+            return false; // Prevent form submission
+          }
+        }
+
+        // Clear any previous error message
+        errorMessageElement.textContent = "";
+        return true; // Allow form submission
+      }
+    </script>
   </body>
 </html>
